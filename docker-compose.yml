@@ -1,0 +1,52 @@
+version: '2'
+services:
+  web:
+    image: churn:latest
+    container_name: container_churn
+    ports:
+      - "8000:8000"
+    expose: 
+      - "8000"
+    volumes: 
+    - ./code:/home/formation/project/code
+    networks:
+      - test_network
+
+  api_tests:
+    image: test:latest
+    container_name: test
+    command: >
+      /bin/bash -c "
+        sleep 5;
+        python3 /test/test.py;
+      "
+    #command: ["tail", "-f", "/dev/null"]//executer un container même en cas d'echec
+    environment:
+      APP_URL: http://container_churn:8000
+    networks: 
+      - test_network
+    depends_on:
+      - web
+  
+  permissions_tests:
+    image: authentication:latest
+    container_name: authentication
+    command: >
+      /bin/bash -c "
+        sleep 5;
+        python3 /authentication/authentication.py;
+      "
+    #command: ["tail", "-f", "/dev/null"]//executer un container même en cas d'echec
+    environment:
+      APP_URL: http://container_churn:8000
+    networks: 
+      - test_network
+    depends_on:
+      - web
+
+
+networks:
+  test_network: 
+    #driver: bridge 
+
+  

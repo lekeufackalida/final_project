@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment-eval
+  labels:
+    app: my-api-eval
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      my_label: container-api
+  template:
+    metadata:
+      labels:
+        my_label: container-api
+    spec:
+      containers:
+      - name: my-api-eval
+        image: lekeufackalida/churn:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8000
+      
