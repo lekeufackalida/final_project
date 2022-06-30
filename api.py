@@ -64,8 +64,8 @@ def permissions(username: str = Depends(get_current_username)):
 def performance(model: Models, username: str = Depends(get_current_username)):
    
     data = {
-        "v1" : 0.73,
-        "v2": 0.81
+        "v1" : 0.63,
+        "v2": 0.72
         }
     choix = model.model    
     
